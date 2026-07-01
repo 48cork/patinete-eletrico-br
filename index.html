@@ -396,6 +396,31 @@
     .mt-6 { margin-top: 24px; }
     .read-more { font-size: .82rem; color: var(--blue); font-weight: 600;
                  display: inline-flex; align-items: center; gap: 4px; }
+    /* ── Sticky Email Bar ───────────────────────── */
+    .sticky-bar__inner {
+      display: flex; align-items: center; gap: 12px;
+      height: 52px; flex-wrap: nowrap;
+    }
+    .sticky-bar__text {
+      color: #fff; font-size: .85rem; font-weight: 600;
+      white-space: nowrap; flex-shrink: 0; margin: 0;
+    }
+    .sticky-bar__form { display: flex; gap: 8px; flex: 1; min-width: 0; }
+    .sticky-bar__input {
+      flex: 1; padding: 7px 12px; border: none; border-radius: 6px;
+      font-size: .85rem; min-width: 0; outline: none;
+    }
+    .sticky-bar__btn {
+      padding: 7px 16px; background: #fff; color: #E8541E;
+      font-weight: 700; font-size: .85rem; border: none;
+      border-radius: 6px; cursor: pointer; white-space: nowrap;
+    }
+    .sticky-bar__success { display: none; color: #fff; font-weight: 700; font-size: .9rem; }
+    @media (max-width: 600px) {
+      .sticky-bar__inner { height: auto; flex-wrap: wrap; padding: 8px 0; gap: 8px; }
+      .sticky-bar__text { white-space: normal; font-size: .78rem; }
+      .sticky-bar__form { width: 100%; }
+    }
   </style>
   <!-- Brevo Form CSS -->
   <style>
@@ -446,6 +471,18 @@
       </div>
     </div>
   </nav>
+
+  <!-- STICKY EMAIL BAR -->
+  <div id="sticky-bar" style="position:sticky;top:60px;z-index:99;background:#E8541E;">
+    <div class="container sticky-bar__inner">
+      <p class="sticky-bar__text">🔔 Preços caindo na Amazon — seja o primeiro a saber:</p>
+      <form id="sticky-bar-form" class="sticky-bar__form" onsubmit="submitStickyBar(event)">
+        <input type="email" id="sticky-bar-email" placeholder="seu@email.com" required class="sticky-bar__input"/>
+        <button type="submit" class="sticky-bar__btn">ASSINAR</button>
+      </form>
+      <span id="sticky-bar-success" class="sticky-bar__success">✓ Cadastrado!</span>
+    </div>
+  </div>
 
   <!-- HERO -->
   <header class="hero" aria-label="Título e apresentação">
@@ -1498,6 +1535,21 @@
     }
   </script>
 
+  <script>
+    function submitStickyBar(e) {
+      e.preventDefault();
+      var fd = new FormData();
+      fd.append('EMAIL', document.getElementById('sticky-bar-email').value);
+      fd.append('email_address_check', '');
+      fd.append('locale', 'pt');
+      fetch('https://4966a73c.sibforms.com/serve/MUIFAEdpKVBRVgOtIhuyZi5aCjoTx3Cq4H0OOZfAp4z9yhJBeG6eXW4naALmMd_covUD1asN_SAah2ctj6-a91YBGfEQiggN8YORR8fkq_eQWZ3iSHdz0b5Aft2Qx5f1Bc4MNAIXYJTz7izBROq7lUhTCFjj_B9aIo842Uc9_9PMSyaXfKxmRCUKExHBi_vmMVVzsHLP8ymuYWJcIA==', {
+        method: 'POST', body: fd, mode: 'no-cors'
+      }).finally(function() {
+        document.getElementById('sticky-bar-form').style.display = 'none';
+        document.getElementById('sticky-bar-success').style.display = 'inline';
+      });
+    }
+  </script>
   <!-- Brevo Form JS -->
   <script>
     window.REQUIRED_CODE_ERROR_MESSAGE = 'Escolha um código de país';
